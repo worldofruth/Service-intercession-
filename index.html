@@ -523,57 +523,6 @@ footer .gold-line {
   pointer-events: none;
 }
 
-/* ── TOOLBAR (search + font + print) ─────────────────── */
-#toolbar {
-  position: sticky; top: 57px; z-index: 99;
-  background: rgba(254,252,248,.97);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 8px 20px; gap: 10px;
-}
-.search-wrap {
-  display: flex; align-items: center; gap: 8px;
-  flex: 1; max-width: 320px;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  padding: 7px 12px;
-  background: white;
-}
-.search-wrap svg { flex-shrink: 0; color: var(--soft); }
-#search-input {
-  border: none; outline: none; background: none;
-  font-family: var(--s); font-size: .78rem;
-  color: var(--dark); width: 100%;
-}
-#search-input::placeholder { color: var(--soft); }
-.tool-btns { display: flex; gap: 6px; align-items: center; }
-.tool-btn {
-  background: none; border: 1px solid var(--line);
-  border-radius: 2px; padding: 6px 10px;
-  cursor: pointer; font-family: var(--s);
-  font-size: .7rem; color: var(--soft);
-  display: flex; align-items: center; gap: 5px;
-  transition: all .2s; white-space: nowrap;
-}
-.tool-btn:hover { border-color: var(--gold); color: var(--gold); }
-.font-size-display {
-  font-family: var(--s); font-size: .7rem;
-  color: var(--gold); min-width: 28px; text-align: center;
-}
-
-/* ── SEARCH RESULTS HIGHLIGHT ────────────────────────── */
-mark {
-  background: rgba(168,132,74,.25);
-  color: var(--dark);
-  border-radius: 2px;
-  padding: 0 2px;
-}
-#search-count {
-  font-family: var(--s); font-size: .7rem;
-  color: var(--gold); white-space: nowrap;
-}
-
 /* ── PREV / NEXT NAV ─────────────────────────────────── */
 .page-nav {
   display: flex; align-items: center; justify-content: space-between;
@@ -708,33 +657,6 @@ mark {
   <button class="nav-btn" data-page="organisation">Organisation</button>
   <button class="nav-btn" data-page="engagement">Engagement</button>
 </nav>
-
-<!-- ╔══════════════════════════════════════╗ -->
-
-<!-- ║  TOOLBAR                             ║ -->
-
-<!-- ╚══════════════════════════════════════╝ -->
-
-<div id="toolbar">
-  <div class="search-wrap">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input id="search-input" type="text" placeholder="Rechercher dans le guide…" />
-    <span id="search-count"></span>
-  </div>
-  <div class="tool-btns">
-    <button class="tool-btn" id="font-down">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
-    </button>
-    <span class="font-size-display" id="font-label">A</span>
-    <button class="tool-btn" id="font-up">
-      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
-    </button>
-    <button class="tool-btn" id="print-btn" title="Imprimer / PDF">
-      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-      PDF
-    </button>
-  </div>
-</div>
 
 <!-- ╔══════════════════════════════════════╗ -->
 
@@ -1182,7 +1104,7 @@ mark {
   function goTo(id) {
     btns.forEach(b => b.classList.toggle('active', b.dataset.page === id));
     pages.forEach(p => p.classList.toggle('visible', p.id === id));
-    document.getElementById('nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    window.scrollTo({ top: document.getElementById('nav').offsetTop, behavior: 'smooth' });
     updateProgress(id);
     triggerReveals();
   }
@@ -1235,67 +1157,7 @@ mark {
   });
   triggerReveals();
 
-  // ── FONT SIZE ─────────────────────────────────────────────
-  let fontSize = 18;
-  const fontLabel = document.getElementById('font-label');
-  function setFont(size) {
-    fontSize = Math.min(Math.max(size, 14), 24);
-    document.body.style.fontSize = fontSize + 'px';
-    const labels = ['A−', 'A', 'A+', 'A++'];
-    const idx = fontSize <= 15 ? 0 : fontSize <= 18 ? 1 : fontSize <= 21 ? 2 : 3;
-    fontLabel.textContent = labels[idx];
-  }
-  document.getElementById('font-up').addEventListener('click', () => setFont(fontSize + 2));
-  document.getElementById('font-down').addEventListener('click', () => setFont(fontSize - 2));
 
-  // ── PRINT ─────────────────────────────────────────────────
-  document.getElementById('print-btn').addEventListener('click', () => window.print());
-
-  // ── SEARCH ───────────────────────────────────────────────
-  let originalContents = {};
-  PAGE_ORDER.forEach(id => {
-    originalContents[id] = document.getElementById(id).innerHTML;
-  });
-
-  const searchInput = document.getElementById('search-input');
-  const searchCount = document.getElementById('search-count');
-
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value.trim();
-
-    // restore originals first
-    PAGE_ORDER.forEach(id => {
-      document.getElementById(id).innerHTML = originalContents[id];
-    });
-    // re-attach goto listeners after restore
-    document.querySelectorAll('[data-goto]').forEach(btn => {
-      btn.addEventListener('click', () => goTo(btn.dataset.goto));
-    });
-
-    if (!q) { searchCount.textContent = ''; return; }
-
-    let total = 0;
-    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
-
-    PAGE_ORDER.forEach(id => {
-      const el = document.getElementById(id);
-      el.innerHTML = el.innerHTML.replace(/>([^<]+)</g, (match, text) => {
-        const replaced = text.replace(regex, m => { total++; return `<mark>${m}</mark>`; });
-        return `>${replaced}<`;
-      });
-    });
-
-    searchCount.textContent = total ? `${total} résultat${total>1?'s':''}` : 'Aucun résultat';
-
-    // navigate to first page with a result
-    const firstHit = PAGE_ORDER.find(id => document.getElementById(id).querySelector('mark'));
-    if (firstHit) goTo(firstHit);
-
-    // re-attach goto listeners
-    document.querySelectorAll('[data-goto]').forEach(btn => {
-      btn.addEventListener('click', () => goTo(btn.dataset.goto));
-    });
-  });
 </script>
 
 </body>
