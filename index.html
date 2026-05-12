@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <meta name="supported-color-schemes" content="light" />
   <title>Le Guide de l'Intercesseur — MFD Online</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,14 +13,15 @@
   <style>
     /* ── ROOT TOKENS ─────────────────────────────────────── */
     :root {
-      --cream:  #F9F5EE;
-      --beige:  #EDE6D8;
-      --gold:   #B8975A;
-      --gold2:  #D4B07A;
-      --dark:   #1A1612;
-      --mid:    #3D3529;
-      --soft:   #7A6E5F;
-      --line:   rgba(184,151,90,.22);
+      --cream:  #FEFCF8;
+      --beige:  #F7F2E8;
+      --beige2: #F0EAD8;
+      --gold:   #A8844A;
+      --gold2:  #C9A06A;
+      --dark:   #1E1A12;
+      --mid:    #3B3426;
+      --soft:   #7A7060;
+      --line:   rgba(168,132,74,.15);
       --r: Cormorant\ Garamond, Georgia, serif;
       --s: Jost, sans-serif;
     }
@@ -26,15 +29,17 @@
 ```
 /* ── RESET ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; color-scheme: light; }
 body {
-  background: var(--cream);
-  color: var(--dark);
+  background: #FEFCF8 !important;
+  color: #1E1A12 !important;
   font-family: var(--r);
   font-size: 18px;
   line-height: 1.75;
   overflow-x: hidden;
 }
+/* Force light mode on all elements */
+* { color-scheme: light; }
 
 /* ── COVER PAGE ──────────────────────────────────────── */
 #cover {
@@ -46,33 +51,31 @@ body {
   text-align: center;
   position: relative;
   padding: 60px 24px;
-  background: var(--dark);
+  background: linear-gradient(170deg, rgba(254,252,248,.92) 0%, rgba(248,240,222,.88) 55%, rgba(242,232,206,.85) 100%),
+    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80&fm=jpg') center/cover no-repeat;
   overflow: hidden;
 }
 #cover::before {
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(184,151,90,.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 80% at 80% 80%, rgba(184,151,90,.06) 0%, transparent 60%);
+    radial-gradient(ellipse 70% 50% at 50% 20%, rgba(168,132,74,.10) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 60% at 85% 85%, rgba(168,132,74,.07) 0%, transparent 55%);
+  pointer-events: none;
 }
-/* subtle grain */
-#cover::after {
-  content: '';
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-  opacity: .5; pointer-events: none;
-}
+#cover::after { display: none; }
 
 .cover-logo {
   width: 110px;
   height: 110px;
   border-radius: 50%;
   object-fit: contain;
-  border: 1px solid rgba(184,151,90,.35);
-  padding: 12px;
+  border: 1px solid rgba(168,132,74,.3);
+  background: white;
+  padding: 10px;
   margin-bottom: 48px;
   position: relative; z-index: 1;
+  box-shadow: 0 4px 24px rgba(168,132,74,.12);
   animation: fadeDown .9s ease both;
 }
 .cover-eyebrow {
@@ -90,7 +93,7 @@ body {
   font-family: var(--r);
   font-size: clamp(3rem, 8vw, 6.5rem);
   font-weight: 300;
-  color: var(--cream);
+  color: var(--dark);
   line-height: 1.05;
   letter-spacing: -.01em;
   position: relative; z-index: 1;
@@ -98,7 +101,7 @@ body {
 }
 .cover-title em {
   font-style: italic;
-  color: var(--gold2);
+  color: var(--gold);
 }
 .cover-subtitle {
   font-family: var(--s);
@@ -106,7 +109,7 @@ body {
   font-weight: 300;
   letter-spacing: .15em;
   text-transform: uppercase;
-  color: rgba(249,245,238,.45);
+  color: var(--soft);
   margin-top: 28px;
   position: relative; z-index: 1;
   animation: fadeDown .9s .35s ease both;
@@ -122,7 +125,7 @@ body {
   font-family: var(--r);
   font-size: 1.15rem;
   font-style: italic;
-  color: rgba(249,245,238,.65);
+  color: var(--mid);
   max-width: 480px;
   position: relative; z-index: 1;
   animation: fadeDown .9s .55s ease both;
@@ -144,13 +147,14 @@ body {
   z-index: 1;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
   animation: fadeDown .9s .7s ease both;
+  cursor: pointer;
 }
 .cover-scroll span {
   font-family: var(--s);
   font-size: .65rem;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: rgba(249,245,238,.35);
+  color: var(--soft);
 }
 .scroll-arrow {
   width: 1px; height: 40px;
@@ -161,7 +165,7 @@ body {
 /* ── NAV ─────────────────────────────────────────────── */
 nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(249,245,238,.95);
+  background: rgba(253,250,245,.97);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   display: flex;
@@ -337,17 +341,17 @@ blockquote cite {
 
 /* ── HIGHLIGHT BOX ───────────────────────────────────── */
 .highlight {
-  background: var(--dark);
-  color: var(--cream);
-  padding: 32px 36px;
+  background: linear-gradient(135deg, #FBF6EC 0%, #F5EDD8 100%);
+  border-left: 3px solid var(--gold);
+  padding: 28px 32px;
   margin: 36px 0;
 }
 .highlight p {
-  font-size: 1.1rem;
-  color: rgba(249,245,238,.85);
+  font-size: 1.05rem;
+  color: var(--dark);
   margin: 0;
 }
-.highlight strong { color: var(--gold2); }
+.highlight strong { color: var(--gold); }
 
 /* ── POLE CARDS ──────────────────────────────────────── */
 .pole-grid {
@@ -359,7 +363,7 @@ blockquote cite {
   margin: 36px 0;
 }
 .pole-card {
-  background: var(--cream);
+  background: white;
   padding: 32px 28px;
 }
 .pole-icon {
@@ -396,7 +400,7 @@ blockquote cite {
   margin: 28px 0;
 }
 .schedule-row {
-  background: var(--cream);
+  background: white;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -430,7 +434,7 @@ blockquote cite {
   padding: 20px 22px;
   border: 1px solid var(--line);
   display: flex; align-items: center; gap: 16px;
-  background: var(--beige);
+  background: white;
 }
 .commit-num {
   font-family: var(--s);
@@ -455,8 +459,8 @@ blockquote cite {
   padding: 28px 24px;
   position: relative; overflow: hidden;
 }
-.level-card.l1 { background: var(--beige); border: 1px solid var(--line); }
-.level-card.l2 { background: var(--dark); color: var(--cream); }
+.level-card.l1 { background: #F7F2E8; border: 1px solid var(--line); }
+.level-card.l2 { background: #F2EBD8; border: 1px solid rgba(168,132,74,.2); }
 .level-label {
   font-family: var(--s);
   font-size: .62rem; font-weight: 600;
@@ -465,14 +469,14 @@ blockquote cite {
 }
 .level-card h3 {
   font-size: 1.2rem; font-weight: 400;
-  margin-bottom: 14px;
+  margin-bottom: 14px; color: var(--dark);
 }
-.level-card.l2 h3 { color: var(--cream); }
+.level-card.l2 h3 { color: var(--dark); }
 .level-card p {
   font-size: .92rem; color: var(--soft); margin: 0;
   line-height: 1.5;
 }
-.level-card.l2 p { color: rgba(249,245,238,.6); }
+.level-card.l2 p { color: var(--mid); }
 
 /* ── DIVIDER ─────────────────────────────────────────── */
 .section-divider {
@@ -493,7 +497,8 @@ blockquote cite {
 
 /* ── FOOTER ──────────────────────────────────────────── */
 footer {
-  background: var(--dark);
+  background: #F0EAD8;
+  border-top: 1px solid var(--line);
   text-align: center;
   padding: 52px 24px;
 }
@@ -501,14 +506,118 @@ footer p {
   font-family: var(--s);
   font-size: .7rem; letter-spacing: .15em;
   text-transform: uppercase;
-  color: rgba(249,245,238,.3);
+  color: var(--soft);
 }
 footer .gold-line {
   width: 32px; height: 1px; background: var(--gold);
   margin: 0 auto 20px;
 }
 
-/* ── ANIMATIONS ──────────────────────────────────────── */
+/* ── PROGRESS BAR ────────────────────────────────────── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; z-index: 200;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  width: 0%;
+  transition: width .3s ease;
+  pointer-events: none;
+}
+
+/* ── TOOLBAR (search + font + print) ─────────────────── */
+#toolbar {
+  position: sticky; top: 57px; z-index: 99;
+  background: rgba(254,252,248,.97);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 20px; gap: 10px;
+}
+.search-wrap {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1; max-width: 320px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 7px 12px;
+  background: white;
+}
+.search-wrap svg { flex-shrink: 0; color: var(--soft); }
+#search-input {
+  border: none; outline: none; background: none;
+  font-family: var(--s); font-size: .78rem;
+  color: var(--dark); width: 100%;
+}
+#search-input::placeholder { color: var(--soft); }
+.tool-btns { display: flex; gap: 6px; align-items: center; }
+.tool-btn {
+  background: none; border: 1px solid var(--line);
+  border-radius: 2px; padding: 6px 10px;
+  cursor: pointer; font-family: var(--s);
+  font-size: .7rem; color: var(--soft);
+  display: flex; align-items: center; gap: 5px;
+  transition: all .2s; white-space: nowrap;
+}
+.tool-btn:hover { border-color: var(--gold); color: var(--gold); }
+.font-size-display {
+  font-family: var(--s); font-size: .7rem;
+  color: var(--gold); min-width: 28px; text-align: center;
+}
+
+/* ── SEARCH RESULTS HIGHLIGHT ────────────────────────── */
+mark {
+  background: rgba(168,132,74,.25);
+  color: var(--dark);
+  border-radius: 2px;
+  padding: 0 2px;
+}
+#search-count {
+  font-family: var(--s); font-size: .7rem;
+  color: var(--gold); white-space: nowrap;
+}
+
+/* ── PREV / NEXT NAV ─────────────────────────────────── */
+.page-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 40px 28px 20px;
+  max-width: 780px; margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+.page-nav-btn {
+  display: flex; align-items: center; gap: 10px;
+  background: none; border: 1px solid var(--line);
+  padding: 12px 20px; cursor: pointer;
+  font-family: var(--s); font-size: .7rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--soft); transition: all .25s;
+  border-radius: 2px;
+}
+.page-nav-btn:hover { border-color: var(--gold); color: var(--gold); }
+.page-nav-btn:disabled { opacity: .3; cursor: default; pointer-events: none; }
+.page-nav-btn svg { flex-shrink: 0; }
+.page-counter {
+  font-family: var(--s); font-size: .7rem;
+  letter-spacing: .15em; color: var(--soft);
+}
+.page-counter span { color: var(--gold); }
+
+/* ── SCROLL REVEAL ───────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── PRINT ───────────────────────────────────────────── */
+@media print {
+  #progress-bar, #toolbar, nav, .cover-scroll,
+  .page-nav, footer { display: none !important; }
+  .page { display: block !important; page-break-before: always; }
+  #cover { page-break-before: avoid; min-height: auto; padding: 40px; }
+  body { font-size: 14px; }
+}
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -561,6 +670,8 @@ footer .gold-line {
 </head>
 <body>
 
+<div id="progress-bar"></div>
+
 <!-- ╔══════════════════════════════════════╗ -->
 
 <!-- ║  COVER                               ║ -->
@@ -572,7 +683,7 @@ footer .gold-line {
        onerror="this.style.display='none'" />
   <span class="cover-eyebrow">Département Intercession — MFD Online</span>
   <h1 class="cover-title">Le Guide de<br><em>l'Intercesseur</em></h1>
-  <p class="cover-subtitle">Vision · Formation · Organisation</p>
+
   <div class="cover-divider"></div>
   <blockquote class="cover-verse">
     <p>« Je cherche parmi eux un homme qui élève un mur et se tienne à la brèche devant moi… »</p>
@@ -597,6 +708,33 @@ footer .gold-line {
   <button class="nav-btn" data-page="organisation">Organisation</button>
   <button class="nav-btn" data-page="engagement">Engagement</button>
 </nav>
+
+<!-- ╔══════════════════════════════════════╗ -->
+
+<!-- ║  TOOLBAR                             ║ -->
+
+<!-- ╚══════════════════════════════════════╝ -->
+
+<div id="toolbar">
+  <div class="search-wrap">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input id="search-input" type="text" placeholder="Rechercher dans le guide…" />
+    <span id="search-count"></span>
+  </div>
+  <div class="tool-btns">
+    <button class="tool-btn" id="font-down">
+      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+    </button>
+    <span class="font-size-display" id="font-label">A</span>
+    <button class="tool-btn" id="font-up">
+      <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button class="tool-btn" id="print-btn" title="Imprimer / PDF">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      PDF
+    </button>
+  </div>
+</div>
 
 <!-- ╔══════════════════════════════════════╗ -->
 
@@ -630,11 +768,22 @@ footer .gold-line {
   <li>Organiser des réunions d'intercession entre les MDA ainsi que des temps d'intercession ouverts à toute l'Église.</li>
 </ol>
 
-<div class="highlight">
+<div class="highlight reveal">
   <p>Le département organise des réunions d'intercession entre les MDA ainsi que des <strong>temps d'intercession ouverts à toute l'Église.</strong></p>
 </div>
 ```
 
+  </div>
+  <div class="page-nav">
+    <button class="page-nav-btn" id="prev-intro" disabled>
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Précédent
+    </button>
+    <span class="page-counter"><span>1</span> / 5</span>
+    <button class="page-nav-btn" data-goto="intercession">
+      Suivant
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -725,12 +874,23 @@ footer .gold-line {
     <li>fortifie l'intercesseur</li>
     <li>révèle les besoins spirituels</li>
   </ul>
-  <div class="highlight">
+  <div class="highlight reveal">
     <p>L'intercession ne doit pas être seulement un moment de réunion, mais un <strong>mode de vie conduit par le Saint-Esprit.</strong></p>
   </div>
 </div>
 ```
 
+  </div>
+  <div class="page-nav">
+    <button class="page-nav-btn" data-goto="intro">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Précédent
+    </button>
+    <span class="page-counter"><span>2</span> / 5</span>
+    <button class="page-nav-btn" data-goto="intercesseur">
+      Suivant
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -825,12 +985,23 @@ footer .gold-line {
     <li>rester équilibré spirituellement</li>
     <li>préserver sa communion avec Dieu</li>
   </ul>
-  <div class="highlight">
+  <div class="highlight reveal">
     <p>Un intercesseur ne recherche ni reconnaissance ni position. Il cherche avant tout à voir <strong>la volonté de Dieu s'accomplir.</strong></p>
   </div>
 </div>
 ```
 
+  </div>
+  <div class="page-nav">
+    <button class="page-nav-btn" data-goto="intercession">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Précédent
+    </button>
+    <span class="page-counter"><span>3</span> / 5</span>
+    <button class="page-nav-btn" data-goto="organisation">
+      Suivant
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -911,14 +1082,19 @@ footer .gold-line {
 ```
 
   </div>
+  <div class="page-nav">
+    <button class="page-nav-btn" data-goto="intercesseur">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Précédent
+    </button>
+    <span class="page-counter"><span>4</span> / 5</span>
+    <button class="page-nav-btn" data-goto="engagement">
+      Suivant
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
 </div>
-
-<!-- ╔══════════════════════════════════════╗ -->
-
-<!-- ║  PAGE 4 — ENGAGEMENT                ║ -->
-
 <!-- ╚══════════════════════════════════════╝ -->
-
 <div class="page" id="engagement">
   <div class="container">
     <header class="page-header">
@@ -965,12 +1141,23 @@ footer .gold-line {
   <p>Le département intercession ne cherche pas à remplir des rôles, mais à former des <strong>hommes et femmes qui portent le cœur de Dieu.</strong></p>
 </div>
 
-<blockquote>
+<blockquote class="reveal">
   <p>Je cherche parmi eux un homme qui élève un mur et se tienne à la brèche devant moi…</p>
   <cite>Ézéchiel 22:30</cite>
 </blockquote>
 ```
 
+  </div>
+  <div class="page-nav">
+    <button class="page-nav-btn" data-goto="organisation">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      Précédent
+    </button>
+    <span class="page-counter"><span>5</span> / 5</span>
+    <button class="page-nav-btn" disabled>
+      Suivant
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
   </div>
 </div>
 
@@ -983,34 +1170,131 @@ footer .gold-line {
 <footer>
   <div class="gold-line"></div>
   <p>Département Intercession — MFD Online</p>
-  <p style="margin-top:8px;font-size:.6rem">Guide de l'Intercesseur · Vision · Formation · Organisation</p>
+
 </footer>
 
 <script>
-  // ── TAB NAVIGATION ─────────────────────────────────────────
+  const PAGE_ORDER = ['intro','intercession','intercesseur','organisation','engagement'];
   const btns  = document.querySelectorAll('.nav-btn');
   const pages = document.querySelectorAll('.page');
 
-  btns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.dataset.page;
+  // ── NAVIGATE TO PAGE ──────────────────────────────────────
+  function goTo(id) {
+    btns.forEach(b => b.classList.toggle('active', b.dataset.page === id));
+    pages.forEach(p => p.classList.toggle('visible', p.id === id));
+    document.getElementById('nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    updateProgress(id);
+    triggerReveals();
+  }
 
-      btns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  btns.forEach(btn => btn.addEventListener('click', () => goTo(btn.dataset.page)));
 
-      pages.forEach(p => {
-        p.classList.remove('visible');
-        if (p.id === target) p.classList.add('visible');
-      });
-
-      // scroll to nav smoothly
-      document.getElementById('nav').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => goTo(btn.dataset.goto));
   });
 
-  // ── SCROLL-REVEAL on cover → auto-scroll indicator ─────────
   document.querySelector('.cover-scroll').addEventListener('click', () => {
     document.getElementById('nav').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ── PROGRESS BAR ─────────────────────────────────────────
+  function updateProgress(id) {
+    const idx = PAGE_ORDER.indexOf(id);
+    const pct = ((idx + 1) / PAGE_ORDER.length) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }
+  updateProgress('intro');
+
+  // Also update on scroll within a page
+  window.addEventListener('scroll', () => {
+    const visPage = document.querySelector('.page.visible');
+    if (!visPage) return;
+    const idx = PAGE_ORDER.indexOf(visPage.id);
+    const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    const base = idx / PAGE_ORDER.length;
+    const pct = (base + scrolled / PAGE_ORDER.length) * 100;
+    document.getElementById('progress-bar').style.width = Math.min(pct, 100) + '%';
+  });
+
+  // ── SCROLL REVEAL ─────────────────────────────────────────
+  function triggerReveals() {
+    setTimeout(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.page.visible .reveal').forEach(el => {
+        el.classList.remove('visible');
+        observer.observe(el);
+      });
+    }, 50);
+  }
+
+  // Add reveal class to articles
+  document.querySelectorAll('.article, .highlight, blockquote, .pole-grid, .commit-list, .levels, .schedule-grid, .mission-list, .intro-lead').forEach(el => {
+    el.classList.add('reveal');
+  });
+  triggerReveals();
+
+  // ── FONT SIZE ─────────────────────────────────────────────
+  let fontSize = 18;
+  const fontLabel = document.getElementById('font-label');
+  function setFont(size) {
+    fontSize = Math.min(Math.max(size, 14), 24);
+    document.body.style.fontSize = fontSize + 'px';
+    const labels = ['A−', 'A', 'A+', 'A++'];
+    const idx = fontSize <= 15 ? 0 : fontSize <= 18 ? 1 : fontSize <= 21 ? 2 : 3;
+    fontLabel.textContent = labels[idx];
+  }
+  document.getElementById('font-up').addEventListener('click', () => setFont(fontSize + 2));
+  document.getElementById('font-down').addEventListener('click', () => setFont(fontSize - 2));
+
+  // ── PRINT ─────────────────────────────────────────────────
+  document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+  // ── SEARCH ───────────────────────────────────────────────
+  let originalContents = {};
+  PAGE_ORDER.forEach(id => {
+    originalContents[id] = document.getElementById(id).innerHTML;
+  });
+
+  const searchInput = document.getElementById('search-input');
+  const searchCount = document.getElementById('search-count');
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim();
+
+    // restore originals first
+    PAGE_ORDER.forEach(id => {
+      document.getElementById(id).innerHTML = originalContents[id];
+    });
+    // re-attach goto listeners after restore
+    document.querySelectorAll('[data-goto]').forEach(btn => {
+      btn.addEventListener('click', () => goTo(btn.dataset.goto));
+    });
+
+    if (!q) { searchCount.textContent = ''; return; }
+
+    let total = 0;
+    const regex = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi');
+
+    PAGE_ORDER.forEach(id => {
+      const el = document.getElementById(id);
+      el.innerHTML = el.innerHTML.replace(/>([^<]+)</g, (match, text) => {
+        const replaced = text.replace(regex, m => { total++; return `<mark>${m}</mark>`; });
+        return `>${replaced}<`;
+      });
+    });
+
+    searchCount.textContent = total ? `${total} résultat${total>1?'s':''}` : 'Aucun résultat';
+
+    // navigate to first page with a result
+    const firstHit = PAGE_ORDER.find(id => document.getElementById(id).querySelector('mark'));
+    if (firstHit) goTo(firstHit);
+
+    // re-attach goto listeners
+    document.querySelectorAll('[data-goto]').forEach(btn => {
+      btn.addEventListener('click', () => goTo(btn.dataset.goto));
+    });
   });
 </script>
 
