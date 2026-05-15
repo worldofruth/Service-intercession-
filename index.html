@@ -666,7 +666,8 @@
   function goTo(id) {
     btns.forEach(b => b.classList.toggle('active', b.dataset.page === id));
     pages.forEach(p => p.classList.toggle('visible', p.id === id));
-    window.scrollTo({ top: document.getElementById('nav').offsetTop - 1, behavior: 'instant' });
+    document.getElementById('nav').scrollIntoView(true);
+    window.scrollBy(0, -1);
     updateProgress(id);
     triggerReveals();
   }
