@@ -581,7 +581,7 @@
       </div>
       <div class="pole-card">
         <div class="pole-icon">🌍</div>
-        <h3>Évangélisation & Territoires</h3>
+        <h3>Les Sentinelles</h3>
         <ul><li>Intercession villes & territoires</li><li>Soutien à l'évangélisation</li><li>Couverture spirituelle des événements</li></ul>
       </div>
       <div class="pole-card">
@@ -666,8 +666,8 @@
   function goTo(id) {
     btns.forEach(b => b.classList.toggle('active', b.dataset.page === id));
     pages.forEach(p => p.classList.toggle('visible', p.id === id));
-    document.getElementById('nav').scrollIntoView(true);
-    window.scrollBy(0, -1);
+    const navTop = document.getElementById('nav').getBoundingClientRect().top + window.scrollY;
+    window.scrollTo(0, navTop);
     updateProgress(id);
     triggerReveals();
   }
